@@ -52,14 +52,14 @@ public class TeleOpMatrix extends LinearOpMode {
     private DcMotor cannonMotor;
     private DcMotor cannonMotor2;
 
+    private Servo loaderServo;
+
     private boolean cannonOn = false;
 
     //Maximum Power/speed of the gatherer motor
     private final double maxGatherPower = 1.0;
 
-    //
-    private Servo loaderServo;
-
+    //Time that the loader stores to find when x amount of time has passed
     private double loaderTime = 0;
 
     @Override
@@ -94,6 +94,14 @@ public class TeleOpMatrix extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        //Creates drive power variables
+        double leftDrivePower;
+        double rightDrivePower;
+        //Power/speed of the gatherer motor
+        double gatherPower=0;
+        //Power/speed of the cannon motors
+        double cannonPower=0;
+
         boolean flag = false;
 
         // run until the end of the match (driver presses STOP)
@@ -109,14 +117,6 @@ public class TeleOpMatrix extends LinearOpMode {
             //Creates and sets values left and right stick to the gamepad left stick, and right stick
             double leftStick1=gamepad1.left_stick_y;
             double rightStick1=gamepad1.right_stick_y;
-
-            //Creates drive power variables
-            double leftDrivePower=0;
-            double rightDrivePower=0;
-            //Power/speed of the gatherer motor
-            double gatherPower=0;
-            //Power/speed of the cannon motors
-            double cannonPower=0;
 
             //Clips the left or right drive powers to 1 if it is > 1 and to -1 if it is < -1 (sets the values to between 1 and -1)
             leftDrivePower = Range.clip(rightStick1,-1,1);
