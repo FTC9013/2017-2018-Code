@@ -46,21 +46,21 @@ public class TeleOpMatrix extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
-    public DcMotor leftMotor;
-    public DcMotor rightMotor;
-    public DcMotor gatherMotor;
-    public DcMotor cannonMotor;
-    public DcMotor cannonMotor2;
+    private DcMotor leftMotor;
+    private DcMotor rightMotor;
+    private DcMotor gatherMotor;
+    private DcMotor cannonMotor;
+    private DcMotor cannonMotor2;
 
-    public boolean cannonOn = false;
+    private boolean cannonOn = false;
 
     //Maximum Power/speed of the gatherer motor
-    public final double maxGatherPower = 1.0;
+    private final double maxGatherPower = 1.0;
 
     //
-    public Servo loaderServo;
+    private Servo loaderServo;
 
-    double loaderTime = 0;
+    private double loaderTime = 0;
 
     @Override
     public void runOpMode()
@@ -110,7 +110,7 @@ public class TeleOpMatrix extends LinearOpMode {
             double leftStick1=gamepad1.left_stick_y;
             double rightStick1=gamepad1.right_stick_y;
 
-            //Creates and initializes drive power variables
+            //Creates drive power variables
             double leftDrivePower=0;
             double rightDrivePower=0;
             //Power/speed of the gatherer motor
@@ -126,7 +126,7 @@ public class TeleOpMatrix extends LinearOpMode {
             {
                 gatherPower = maxGatherPower;
             }
-            else if (gamepad1.right_bumper == true)
+            else if (gamepad1.right_bumper)
             {
                 gatherPower = -maxGatherPower;
             }
@@ -136,19 +136,19 @@ public class TeleOpMatrix extends LinearOpMode {
                 cannonOn = !cannonOn;
             }
 
-            if (gamepad2.left_bumper == true && !flag)
+            if (gamepad2.left_bumper && !flag)
             {
                     loaderServo.setPosition(0);
                     flag = true;
                     loaderTime = time;
             }
-            else if (!gamepad2.left_bumper == true)
+            else if (!gamepad2.left_bumper)
             {
                     flag = false;
                     //loaderServoPos -= loaderServoDelta;
             }
 
-            if (time > loaderTime + 0.5)
+            if (time > loaderTime + 0.3)
             {
                 loaderServo.setPosition(1);
             }
