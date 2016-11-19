@@ -35,7 +35,6 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -46,34 +45,53 @@ public class TeleOpMatrix extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
-    private DcMotor gatherMotor;
-    private DcMotor cannonMotor;
-    private DcMotor cannonMotor2;
-
-    private Servo loaderServo;
-
-    private boolean cannonOn = false;
-
-    //Maximum Power/speed of the gatherer motor
-    private final double maxGatherPower = 1.0;
-
-    //Time that the loader stores to find when x amount of time has passed
-    private double loaderTime = 0;
 
     @Override
     public void runOpMode()
     {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
 
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
+        //Creates drive power variables
+        double leftDrivePower = 0;
+        double rightDrivePower = 0;
+        //Power/speed of the gatherer motor
+        double gatherPower=0;
+        //Power/speed of the cannon motors
+        double cannonPower=0;
+
+        double leftStick1 = 0;
+
+        double rightStick1 = 0;
+        boolean shootFlag = false;
+
+        boolean gatherOnFlag = false;
+        double gatherToggleTime = 0;
+        boolean gatherToggleFlag = false;
+
+        double cannonToggleTime = 0;
+        boolean cannonToggleFlag = false;
+        boolean cannonOnFlag = false;
+
+        DcMotor leftMotor;
+        DcMotor rightMotor;
+        DcMotor gatherMotor;
+        DcMotor cannonMotor;
+        DcMotor cannonMotor2;
+
+        Servo loaderServo;
+
+        //Maximum Power/speed of the gatherer motor
+        final double maxGatherPower = 1.0;
+
+        //Time that the loader stores to find when x amount of time has passed
+        double loaderTime = 0;
+
+         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-        leftMotor = hardwareMap.dcMotor.get("left_drive");
-        rightMotor = hardwareMap.dcMotor.get("right_drive");
+
+        leftMotor = hardwareMap.dcMotor.get("leftmotor");
+        rightMotor = hardwareMap.dcMotor.get("rightmotor");
         gatherMotor = hardwareMap.dcMotor.get("gather");
         cannonMotor = hardwareMap.dcMotor.get("cannon1");
         cannonMotor2 = hardwareMap.dcMotor.get("cannon2");
@@ -90,19 +108,24 @@ public class TeleOpMatrix extends LinearOpMode {
         cannonMotor.setDirection(DcMotor.Direction.FORWARD);
         cannonMotor2.setDirection(DcMotor.Direction.REVERSE);
 
+
+        //Sets the power of the drive motors to the initial value
+        leftMotor.setPower(leftDrivePower);
+        rightMotor.setPower(rightDrivePower);
+
+        //Init the gatherer at power 0
+        gatherMotor.setPower(gatherPower);
+
+        // Set cannon power
+        cannonMotor.setPower(cannonPower);
+        cannonMotor2.setPower(cannonPower);
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
-        //Creates drive power variables
-        double leftDrivePower;
-        double rightDrivePower;
-        //Power/speed of the gatherer motor
-        double gatherPower=0;
-        //Power/speed of the cannon motors
-        double cannonPower=0;
-
-        boolean flag = false;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive())
@@ -110,48 +133,88 @@ public class TeleOpMatrix extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
+            // gather is off, start gather in forward rotation
+            if ( gamepad1.right_bumper && !gatherOnFlag && !gatherToggleFlag )
+            {
+                gatherPower = maxGatherPower;
+                gatherOnFlag = true;
+                gatherToggleTime = time;
+                gatherToggleFlag = true;
+            }
+            // gather is on, stop the gather
+            if ( gamepad1.right_bumper && gatherOnFlag && !gatherToggleFlag )
+            {
+                gatherPower = 0;
+                gatherOnFlag = false;
+                gatherToggleTime = time;
+                gatherToggleFlag = true;
+            }
+            // gather is running, reverse gather rotation
+            if ( gamepad1.left_bumper && gatherOnFlag && !gatherToggleFlag )
+            {
+                gatherPower *= -1;
+                gatherToggleTime = time;
+                gatherToggleFlag = true;
+            }
+
+            // cannon is off, start the cannon
+            if ( gamepad2.left_bumper && !cannonOnFlag && !cannonToggleFlag )
+            {
+                cannonPower = 1.0;
+                cannonOnFlag = true;
+                cannonToggleTime = time;
+                cannonToggleFlag = true;
+            }
+            // cannon is on, stop the cannon
+            if ( gamepad2.left_bumper && cannonOnFlag && !cannonToggleFlag )
+            {
+                cannonPower = 0;
+                cannonOnFlag = false;
+                cannonToggleTime = time;
+                cannonToggleFlag = true;
+            }
+            // shoot the cannon
+            if ( gamepad2.right_bumper && !shootFlag && cannonOnFlag )
+            {
+                    loaderServo.setPosition(0);
+                    shootFlag = true;
+                    loaderTime = time;
+            }
+
+            // reset the servo to the bottom of the cycle and clear the flag if button is released
+            if ( time > loaderTime + 0.4 )
+            {
+                if ( !gamepad2.right_bumper )
+                {
+                    shootFlag = false;
+                }
+                loaderServo.setPosition(1);
+            }
+
+            // Reset the gather toggle lockout after time and both bumpers are released
+            if (( time > gatherToggleTime + 1.0 ) && !gamepad1.left_bumper && !gamepad1.right_bumper )
+            {
+                gatherToggleFlag = false;
+            }
+
+            // Reset the cannon toggle lockout after time and bumper is released
+            if (( time > cannonToggleTime + 1.0 ) && !gamepad2.left_bumper )
+            {
+                cannonToggleFlag = false;
+            }
+
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
             // rightMotor.setPower(-gamepad1.right_stick_y);
-
             //Creates and sets values left and right stick to the gamepad left stick, and right stick
-            double leftStick1=gamepad1.left_stick_y;
-            double rightStick1=gamepad1.right_stick_y;
+
+            leftStick1=gamepad1.left_stick_y;
+
+            rightStick1=gamepad1.right_stick_y;
 
             //Clips the left or right drive powers to 1 if it is > 1 and to -1 if it is < -1 (sets the values to between 1 and -1)
             leftDrivePower = Range.clip(rightStick1,-1,1);
             rightDrivePower = Range.clip(leftStick1,-1,1);
-
-            if (gamepad1.right_trigger == 1f)
-            {
-                gatherPower = maxGatherPower;
-            }
-            else if (gamepad1.right_bumper)
-            {
-                gatherPower = -maxGatherPower;
-            }
-
-            if (gamepad2.left_trigger == 1f)
-            {
-                cannonOn = !cannonOn;
-            }
-
-            if (gamepad2.left_bumper && !flag)
-            {
-                    loaderServo.setPosition(0);
-                    flag = true;
-                    loaderTime = time;
-            }
-            else if (!gamepad2.left_bumper)
-            {
-                    flag = false;
-                    //loaderServoPos -= loaderServoDelta;
-            }
-
-            if (time > loaderTime + 0.3)
-            {
-                loaderServo.setPosition(1);
-            }
 
             //Sets the power of the drive motors to the value read from the gamepad sticks (between 0 and 1)
             leftMotor.setPower(leftDrivePower);
@@ -160,14 +223,11 @@ public class TeleOpMatrix extends LinearOpMode {
             //Activate the gatherer at power set
             gatherMotor.setPower(gatherPower);
 
-            if(cannonOn)
-            {
-                cannonPower = 1.0;
-            }
-
+            // Set cannon power
             cannonMotor.setPower(cannonPower);
             cannonMotor2.setPower(cannonPower);
 
+            idle();
         }
     }
 }
