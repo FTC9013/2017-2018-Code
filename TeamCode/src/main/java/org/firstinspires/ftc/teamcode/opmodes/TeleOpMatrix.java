@@ -134,7 +134,7 @@ public class TeleOpMatrix extends LinearOpMode {
             telemetry.update();
 
             // gather is off, start gather in forward rotation
-            if ( gamepad1.right_bumper && !gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad2.x && !gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower = maxGatherPower;
                 gatherOnFlag = true;
@@ -142,7 +142,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 gatherToggleFlag = true;
             }
             // gather is on, stop the gather
-            if ( gamepad1.right_bumper && gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad2.x && gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower = 0;
                 gatherOnFlag = false;
@@ -150,7 +150,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 gatherToggleFlag = true;
             }
             // gather is running, reverse gather rotation
-            if ( gamepad1.left_bumper && gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad2.y && gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower *= -1;
                 gatherToggleTime = time;

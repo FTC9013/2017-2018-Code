@@ -90,7 +90,7 @@ public class AutonomousRed extends LinearOpMode{
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-//        // Step 1:  Drive forward for 3 seconds
+//        // Step 1:  Drive forward for 5 seconds
         //Sets the power of the drive motors to the initial value
         leftMotor.setPower(0.5);
         rightMotor.setPower(0.5);
