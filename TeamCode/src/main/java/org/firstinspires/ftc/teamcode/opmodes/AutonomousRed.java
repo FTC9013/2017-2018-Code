@@ -22,8 +22,6 @@ public class AutonomousRed extends LinearOpMode{
 
     private ElapsedTime runtime = new ElapsedTime();
 
-
-
     @Override
     public void runOpMode() {
 

@@ -134,7 +134,7 @@ public class TeleOpMatrix extends LinearOpMode {
             telemetry.update();
 
             // gather is off, start gather in forward rotation
-            if ( gamepad2.x && !gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad1.right_bumper && !gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower = maxGatherPower;
                 gatherOnFlag = true;
@@ -142,7 +142,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 gatherToggleFlag = true;
             }
             // gather is on, stop the gather
-            if ( gamepad2.x && gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad1.right_bumper && gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower = 0;
                 gatherOnFlag = false;
@@ -150,7 +150,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 gatherToggleFlag = true;
             }
             // gather is running, reverse gather rotation
-            if ( gamepad2.y && gatherOnFlag && !gatherToggleFlag )
+            if ( gamepad1.left_bumper && gatherOnFlag && !gatherToggleFlag )
             {
                 gatherPower *= -1;
                 gatherToggleTime = time;
@@ -160,7 +160,7 @@ public class TeleOpMatrix extends LinearOpMode {
             // cannon is off, start the cannon
             if ( gamepad2.left_bumper && !cannonOnFlag && !cannonToggleFlag )
             {
-                cannonPower = 1.0;
+                cannonPower = 0.5;
                 cannonOnFlag = true;
                 cannonToggleTime = time;
                 cannonToggleFlag = true;
@@ -176,9 +176,9 @@ public class TeleOpMatrix extends LinearOpMode {
             // shoot the cannon
             if ( gamepad2.right_bumper && !shootFlag && cannonOnFlag )
             {
-                    loaderServo.setPosition(0);
-                    shootFlag = true;
-                    loaderTime = time;
+                loaderServo.setPosition(0);
+                shootFlag = true;
+                loaderTime = time;
             }
 
             // reset the servo to the bottom of the cycle and clear the flag if button is released
