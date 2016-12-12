@@ -122,7 +122,7 @@ public class AutoOpticalNavigation extends LinearOpMode {
          * {@link Parameters} instance with which you initialize Vuforia.
          */
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "ATsODcD/////AAAAAVw2lR...d45oGpdljdOh5LuFB9nDNfckoxb8COxKSFX";
+        parameters.vuforiaLicenseKey = "ASPJ+XX/////AAAAGVoUw33gakWRlcLvnWu+vK4/0BincNFIHCnW6Vxig4SR4t7P9G9oRc/LemAnahIp4wXtyWHVoSaLI/7EIpxN/3Tq08Pgs6zsO9pxNukXh8cm7bWcVJ3/RCqAyZReB8kD2duQoOqUlfG9vjVzcLcdu+SFkQP0MkHR8jviuZX30Rp2TWCAtmR/ecjzb6uHPRvkw4IfpWhppDv0TVkCaCvkeMNXI+cR50ythnyVKtZRRs9f0tb3abDhQ1RaFqF9ljyTyzUIgd6M+LnF3fEPJXYvgJSYk4jYyzFf5ATDK93sv8Iem9jNN6zcmKydWFET/vBWhyRLmaU7EkFdseNeWgW5Hgc+G33OeYdPbHy7DKVUB/vg";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
