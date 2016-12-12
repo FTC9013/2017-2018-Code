@@ -182,7 +182,7 @@ public class TeleOpMatrix extends LinearOpMode {
             }
 
             // reset the servo to the bottom of the cycle and clear the flag if button is released
-            if ( time > loaderTime + 0.4 )
+            if ( time > loaderTime + 1.0 )
             {
                 if ( !gamepad2.right_bumper )
                 {
@@ -192,7 +192,7 @@ public class TeleOpMatrix extends LinearOpMode {
             }
 
             // Reset the gather toggle lockout after time and both bumpers are released
-            if (( time > gatherToggleTime + 1.0 ) && !gamepad1.left_bumper && !gamepad1.right_bumper )
+            if (( time > gatherToggleTime + 0.5 ) && !gamepad1.left_bumper && !gamepad1.right_bumper )
             {
                 gatherToggleFlag = false;
             }
