@@ -174,6 +174,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 cannonToggleFlag = true;
             }
             // shoot the cannon
+            // if the bumper and not waiting for last shot to time out and the cannon is on.
             if ( gamepad2.right_bumper && !shootFlag && cannonOnFlag )
             {
                 loaderServo.setPosition(0);
@@ -182,12 +183,20 @@ public class TeleOpMatrix extends LinearOpMode {
             }
 
             // reset the servo to the bottom of the cycle and clear the flag if button is released
-            if ( time > loaderTime + 1.0 )
+            // if it has been longer than x from the shot
+            // x should be only long enough to cycle the servo for a good shot.
+            // longer time keeps the arm up longer.
+            if ( time > loaderTime + 0.4 )
             {
+                // check to see if the shoot button is released
+                // if released then reset the shoot flag that locks out the next shot until
+                // the cycle is complete
                 if ( !gamepad2.right_bumper )
                 {
                     shootFlag = false;
                 }
+
+                // cycle the servo back down.
                 loaderServo.setPosition(1);
             }
 
@@ -198,6 +207,8 @@ public class TeleOpMatrix extends LinearOpMode {
             }
 
             // Reset the cannon toggle lockout after time and bumper is released
+            // to keep from toggling too soon after the previous.
+            // if the bumper is released and enough time has passed clear the flag
             if (( time > cannonToggleTime + 1.0 ) && !gamepad2.left_bumper )
             {
                 cannonToggleFlag = false;
