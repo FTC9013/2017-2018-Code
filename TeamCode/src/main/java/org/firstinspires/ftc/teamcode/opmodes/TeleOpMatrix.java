@@ -71,11 +71,14 @@ public class TeleOpMatrix extends LinearOpMode {
         boolean cannonToggleFlag = false;
         boolean cannonOnFlag = false;
 
+        double pusherTime = 0;
+
         DcMotor leftMotor;
         DcMotor rightMotor;
         DcMotor gatherMotor;
         DcMotor cannonMotor;
         DcMotor cannonMotor2;
+        DcMotor pusherMotor;
 
         Servo loaderServo;
 
@@ -95,6 +98,7 @@ public class TeleOpMatrix extends LinearOpMode {
         gatherMotor = hardwareMap.dcMotor.get("gather");
         cannonMotor = hardwareMap.dcMotor.get("cannon1");
         cannonMotor2 = hardwareMap.dcMotor.get("cannon2");
+        pusherMotor = hardwareMap.dcMotor.get("pusher");
 
         loaderServo = hardwareMap.servo.get("loader");
 
@@ -213,6 +217,42 @@ public class TeleOpMatrix extends LinearOpMode {
             {
                 cannonToggleFlag = false;
             }
+
+            // If X on gamepad 2 is pressed, the button pusher will push out.
+            /*     if (gamepad2.x)
+            {
+                if (pusherTime == 0)
+                {
+                    pusherTime = time;
+                }
+                // if (time > whenButtonWasPressed + timeItTakesToExtendTheArm)
+                if(time < pusherTime + 1.0)
+                {
+                    pusherMotor.setPower(1);
+                }
+                else
+                {
+                    pusherTime = 0;
+                }
+            }
+            else
+            {
+                if (pusherTime == 0)
+                {
+                    pusherTime = time;
+                }
+                // if (time > whenButtonWasPressed + timeItTakesToExtendTheArm)
+                if(time < pusherTime + 1.0)
+                {
+                    pusherMotor.setPower(-1);
+                }
+                else
+                {
+                    pusherTime = 0;
+                }
+            }
+
+            */
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
