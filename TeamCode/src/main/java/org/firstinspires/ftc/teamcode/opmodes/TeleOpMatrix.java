@@ -71,15 +71,14 @@ public class TeleOpMatrix extends LinearOpMode {
         boolean cannonToggleFlag = false;
         boolean cannonOnFlag = false;
 
-        double pusherTime = 0;
 
         DcMotor leftMotor;
         DcMotor rightMotor;
         DcMotor gatherMotor;
         DcMotor cannonMotor;
         DcMotor cannonMotor2;
-        DcMotor pusherMotor;
 
+        Servo pusherServo;
         Servo loaderServo;
 
         //Maximum Power/speed of the gatherer motor
@@ -98,8 +97,8 @@ public class TeleOpMatrix extends LinearOpMode {
         gatherMotor = hardwareMap.dcMotor.get("gather");
         cannonMotor = hardwareMap.dcMotor.get("cannon1");
         cannonMotor2 = hardwareMap.dcMotor.get("cannon2");
-        pusherMotor = hardwareMap.dcMotor.get("pusher");
 
+        pusherServo = hardwareMap.servo.get("pusher");
         loaderServo = hardwareMap.servo.get("loader");
 
         // eg: Set the drive motor directions:
@@ -123,6 +122,7 @@ public class TeleOpMatrix extends LinearOpMode {
         // Set cannon power
         cannonMotor.setPower(cannonPower);
         cannonMotor2.setPower(cannonPower);
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -219,40 +219,17 @@ public class TeleOpMatrix extends LinearOpMode {
             }
 
             // If X on gamepad 2 is pressed, the button pusher will push out.
-            /*     if (gamepad2.x)
+            if(gamepad2.x)
             {
-                if (pusherTime == 0)
-                {
-                    pusherTime = time;
-                }
-                // if (time > whenButtonWasPressed + timeItTakesToExtendTheArm)
-                if(time < pusherTime + 1.0)
-                {
-                    pusherMotor.setPower(1);
-                }
-                else
-                {
-                    pusherTime = 0;
-                }
-            }
-            else
-            {
-                if (pusherTime == 0)
-                {
-                    pusherTime = time;
-                }
-                // if (time > whenButtonWasPressed + timeItTakesToExtendTheArm)
-                if(time < pusherTime + 1.0)
-                {
-                    pusherMotor.setPower(-1);
-                }
-                else
-                {
-                    pusherTime = 0;
-                }
+                pusherServo.setPosition(1);
             }
 
-            */
+            //When x is not pressed, the servo will stay in the 0 position.
+            else
+            {
+                pusherServo.setPosition(0);
+            }
+
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
@@ -277,6 +254,8 @@ public class TeleOpMatrix extends LinearOpMode {
             // Set cannon power
             cannonMotor.setPower(cannonPower);
             cannonMotor2.setPower(cannonPower);
+
+
 
             idle();
         }
