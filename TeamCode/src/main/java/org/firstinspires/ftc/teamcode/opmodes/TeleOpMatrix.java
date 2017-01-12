@@ -71,6 +71,8 @@ public class TeleOpMatrix extends LinearOpMode {
         boolean cannonToggleFlag = false;
         boolean cannonOnFlag = false;
 
+        //Will be restored later
+        //boolean pusherFlag = false;
 
         DcMotor leftMotor;
         DcMotor rightMotor;
@@ -78,7 +80,8 @@ public class TeleOpMatrix extends LinearOpMode {
         DcMotor cannonMotor;
         DcMotor cannonMotor2;
 
-        Servo pusherServo;
+        //Will be restored later
+        //Servo pusherServo;
         Servo loaderServo;
 
         //Maximum Power/speed of the gatherer motor
@@ -98,7 +101,8 @@ public class TeleOpMatrix extends LinearOpMode {
         cannonMotor = hardwareMap.dcMotor.get("cannon1");
         cannonMotor2 = hardwareMap.dcMotor.get("cannon2");
 
-        pusherServo = hardwareMap.servo.get("pusher");
+        //Will be restored later
+        //pusherServo = hardwareMap.servo.get("pusher");
         loaderServo = hardwareMap.servo.get("loader");
 
         // eg: Set the drive motor directions:
@@ -218,6 +222,7 @@ public class TeleOpMatrix extends LinearOpMode {
                 cannonToggleFlag = false;
             }
 
+            /* Do not delete, it will be restored later
             // If X on gamepad 2 is pressed, the button pusher will push out.
             if(gamepad2.x)
             {
@@ -229,7 +234,7 @@ public class TeleOpMatrix extends LinearOpMode {
             {
                 pusherServo.setPosition(0);
             }
-
+            */
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
