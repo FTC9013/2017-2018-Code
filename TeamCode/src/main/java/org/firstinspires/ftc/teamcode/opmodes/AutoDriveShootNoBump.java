@@ -84,6 +84,12 @@ public class AutoDriveShootNoBump extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        while (opModeIsActive() && (runtime.seconds() < 10.0))
+        {
+            telemetry.addData("Path", "Wait: %10.0f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
         // Step 1:  Drive forward for 3 seconds at half power with gatherer running
@@ -91,10 +97,10 @@ public class AutoDriveShootNoBump extends LinearOpMode{
         gatherMotor.setPower(maxGatherPower);
 
         //Sets the power of the drive motors to the run value
-        leftMotor.setPower(0.5);
-        rightMotor.setPower(0.5);
+        leftMotor.setPower(0.25);
+        rightMotor.setPower(0.25);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2.5))
+        while (opModeIsActive() && (runtime.seconds() < 2.0))
         {
             telemetry.addData("Path", "Step 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
