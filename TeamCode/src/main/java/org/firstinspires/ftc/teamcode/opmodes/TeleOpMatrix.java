@@ -127,6 +127,8 @@ public class TeleOpMatrix extends LinearOpMode {
         cannonMotor.setPower(cannonPower);
         cannonMotor2.setPower(cannonPower);
 
+        // cycle shoot arm down
+        loaderServo.setPosition(1);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

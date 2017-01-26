@@ -77,6 +77,9 @@ public class AutoDriveShootNoBump extends LinearOpMode{
         cannonMotor.setPower(cannonPower);
         cannonMotor2.setPower(cannonPower);
 
+        // cycle shoot arm down
+        loaderServo.setPosition(1);
+
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
