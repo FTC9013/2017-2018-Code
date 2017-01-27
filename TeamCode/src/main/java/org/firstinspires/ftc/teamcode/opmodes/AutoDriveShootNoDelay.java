@@ -10,14 +10,12 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServoImpl;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoDriveShoot", group="Matrix")
-public class AutoDriveShoot extends LinearOpMode{
+@Autonomous(name="AutoDriveShootNoDelay", group="Matrix")
+public class AutoDriveShootNoDelay extends LinearOpMode{
 
     /* Declare OpMode members. */
 
@@ -85,13 +83,6 @@ public class AutoDriveShoot extends LinearOpMode{
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 10.0))
-        {
-            telemetry.addData("Path", "Wait: %10.0f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 

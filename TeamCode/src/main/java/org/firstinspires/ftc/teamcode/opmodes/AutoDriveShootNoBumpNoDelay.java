@@ -10,14 +10,12 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServoImpl;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoDriveShoot", group="Matrix")
-public class AutoDriveShoot extends LinearOpMode{
+@Autonomous(name="AutoDriveShootNoBumpNoDelay", group="Matrix")
+public class AutoDriveShootNoBumpNoDelay extends LinearOpMode{
 
     /* Declare OpMode members. */
 
@@ -79,6 +77,9 @@ public class AutoDriveShoot extends LinearOpMode{
         cannonMotor.setPower(cannonPower);
         cannonMotor2.setPower(cannonPower);
 
+        // cycle shoot arm down
+        loaderServo.setPosition(1);
+
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
@@ -86,16 +87,9 @@ public class AutoDriveShoot extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 10.0))
-        {
-            telemetry.addData("Path", "Wait: %10.0f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Drive forward for 3 seconds at quarter power with gatherer running
+        // Step 1:  Drive forward for 3 seconds at half power with gatherer running
         // turn on the gather
         gatherMotor.setPower(maxGatherPower);
 
@@ -105,7 +99,7 @@ public class AutoDriveShoot extends LinearOpMode{
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 2.0))
         {
-            telemetry.addData("Path", "Step 1: %2.0f S Elapsed", runtime.seconds());
+            telemetry.addData("Path", "Step 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
@@ -152,7 +146,6 @@ public class AutoDriveShoot extends LinearOpMode{
             telemetry.update();
         }
 
-
         // shoot the cannon
         loaderServo.setPosition(0);
         // reset the run timer
@@ -170,22 +163,6 @@ public class AutoDriveShoot extends LinearOpMode{
         // turn off the shooter
         cannonMotor.setPower(0.0);
         cannonMotor2.setPower(0.0);
-
-        // Step 3:  short drive forward
-
-        //Sets the power of the drive motors to the run value
-        leftMotor.setPower(0.25);
-        rightMotor.setPower(0.25);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.5))
-        {
-            telemetry.addData("Path", "Step 3: %2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
-        //Stop the drive motors
-        leftMotor.setPower(0.0);
-        rightMotor.setPower(0.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

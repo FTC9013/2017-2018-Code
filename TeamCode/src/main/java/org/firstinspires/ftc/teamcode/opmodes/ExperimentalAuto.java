@@ -10,14 +10,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="AutoDriveShoot", group="Matrix")
-public class AutoDriveShoot extends LinearOpMode{
+@Autonomous(name="ExperimentalAuto", group="Matrix")
+public class ExperimentalAuto extends LinearOpMode{
 
     /* Declare OpMode members. */
 
@@ -42,6 +41,8 @@ public class AutoDriveShoot extends LinearOpMode{
 
         Servo loaderServo;
 
+        CRServo pusherServo;
+
         //Maximum Power/speed of the gatherer motor
         final double maxGatherPower = 1.0;
 
@@ -57,6 +58,8 @@ public class AutoDriveShoot extends LinearOpMode{
         cannonMotor2 = hardwareMap.dcMotor.get("cannon2");
 
         loaderServo = hardwareMap.servo.get("loader");
+
+        pusherServo = hardwareMap.crservo.get("pusher");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
@@ -79,12 +82,62 @@ public class AutoDriveShoot extends LinearOpMode{
         cannonMotor.setPower(cannonPower);
         cannonMotor2.setPower(cannonPower);
 
+        // cycle shoot arm down
+        loaderServo.setPosition(1);
+
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+
+
+
+        runtime.reset();
+        pusherServo.setPower(0);
+
+        while (opModeIsActive() && (runtime.seconds() < 3.0))
+        {
+            telemetry.addData("Status", "push 0");    //
+            telemetry.update();
+        }
+
+        runtime.reset();
+        pusherServo.setPower(1);
+
+        while (opModeIsActive() && (runtime.seconds() < 3.0))
+        {
+            telemetry.addData("Status", "push 1");    //
+            telemetry.update();
+        }
+
+        runtime.reset();
+        pusherServo.setPower(-1);
+
+        while (opModeIsActive() && (runtime.seconds() < 3.0))
+        {
+            telemetry.addData("Status", "push -1");    //
+            telemetry.update();
+        }
+        runtime.reset();
+        pusherServo.setPower(0);
+
+        while (opModeIsActive() && (runtime.seconds() < 3.0))
+        {
+            telemetry.addData("Status", "push 0");    //
+            telemetry.update();
+        }
+
+
+
+
+
+
+
+
+
 
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 10.0))
@@ -105,7 +158,7 @@ public class AutoDriveShoot extends LinearOpMode{
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 2.0))
         {
-            telemetry.addData("Path", "Step 1: %2.0f S Elapsed", runtime.seconds());
+            telemetry.addData("Path", "Step 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
